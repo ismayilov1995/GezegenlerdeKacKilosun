@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
+import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -47,28 +49,42 @@ class MainActivity : AppCompatActivity() {
         //Hocam ben burada range 0..7 kullaninca hata veriyordu nedenini anlayamadim
 
         ivNext.setOnClickListener {
-            if (arrayPos in 0..5){
+            if (arrayPos in 0..5 && !userWeightInKg.isNullOrEmpty()){
                 arrayPos++
                 imageView.setImageBitmap(planetImageArray[arrayPos])
                 tVPlanet.text = planetNameArray[arrayPos]
                 avtomatikHesabla()
+            }else if (userWeightInKg.isNullOrEmpty()){
+                ifEditTextIsEmpt()
             }
         }
 
         //Ve burada 7..1 e yazmak zorunda kaldim bunu da deneme yanilma yontemiyle yaptim. nedenini anlayamadim
         ivBack.setOnClickListener {
-            if (arrayPos in 7 downTo 1){
+            if (arrayPos in 7 downTo 1 && !userWeightInKg.isNullOrEmpty()){
                 arrayPos--
                 imageView.setImageBitmap(planetImageArray[arrayPos])
                 tVPlanet.text = planetNameArray[arrayPos]
                 avtomatikHesabla()
+            }else if (userWeightInKg.isNullOrEmpty()){
+                ifEditTextIsEmpt()
             }
         }
 
 
 
         hesabla.setOnClickListener {
+            if (!userWeightInKg.isNullOrEmpty())
             secilenPlanetiHesabla()
+            else ifEditTextIsEmpt()
+        }
+
+        checkBox.setOnClickListener {
+            if(checkBox.isChecked){
+                hesabla.visibility = View.INVISIBLE
+            }else{
+                hesabla.visibility = View.VISIBLE
+            }
         }
 
     }
@@ -79,6 +95,10 @@ class MainActivity : AppCompatActivity() {
         }else{
             //nothing
         }
+    }
+
+    fun ifEditTextIsEmpt(){
+        Toast.makeText(this,"YUXARIYA KILONUZU GIRIN",Toast.LENGTH_SHORT).show()
     }
 
     fun secilenPlanetiHesabla(){
